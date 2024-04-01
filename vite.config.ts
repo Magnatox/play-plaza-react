@@ -3,6 +3,6 @@ import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/play-plaza-react/",
   plugins: [react()],
+  base: "https://magnatox.github.io/play-plaza-react/",
 });
