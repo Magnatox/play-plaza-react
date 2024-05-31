@@ -1,8 +1,9 @@
 import {useQuery} from "@tanstack/react-query";
 import platforms from "../data/platforms";
-import APIClient from "../services/api-client";
+import {FetchRespons} from "../services/api-client";
+import axios from "axios";
 
-const apiClient = new APIClient<Platform>("/platformss/lists/parents");
+// const apiClient = new APIClient<Platform>("/platforms/lists/parents");
 
 export interface Platform {
   id: number;
@@ -10,12 +11,24 @@ export interface Platform {
   slug: string;
 }
 
+const axiosInstance = axios.create({
+  baseURL: "https://api.rawg.io/api",
+  params: {
+    key: "dd989457e00946d49de157edc22eba94",
+  },
+});
+
+const fetchP = async () => {
+  const res = await axiosInstance.get<FetchRespons<Platform>>("/platforms/lists/parents");
+  return res.data;
+};
+
 const usePlatforms = () =>
   useQuery({
     queryKey: ["platforms"],
-    queryFn: apiClient.getAll,
+    queryFn: fetchP,
     staleTime: 24 * 60 * 60 * 1000,
-    initialData: {count: platforms.length, next: null, results: platforms},
+    initialData: platforms,
   });
 
 export default usePlatforms;

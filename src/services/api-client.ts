@@ -3,13 +3,14 @@ import axios, {AxiosRequestConfig} from "axios";
 export interface FetchRespons<T> {
   count: number;
   next: string | null;
+  previous: string | null;
   results: T[];
 }
 
 const axiosInstance = axios.create({
   baseURL: "https://api.rawg.io/api",
   params: {
-    key: "eaba30ac3cf24c0494b48e7488ff4867",
+    key: "dd989457e00946d49de157edc22eba94",
   },
 });
 
@@ -20,8 +21,9 @@ class APIClient<T> {
     this.endpoint = endpoing;
   }
 
-  getAll(config: AxiosRequestConfig) {
-    return axiosInstance.get<FetchRespons<T>>(this.endpoint, config).then((res) => res.data);
+  async getAll(config?: AxiosRequestConfig) {
+    const res = await axiosInstance.get<FetchRespons<T>>(this.endpoint, config);
+    return res.data;
   }
 }
 
